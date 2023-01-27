@@ -190,7 +190,7 @@ const CardifValidation = () => {
                             ))}
                         </CButtonGroup>
                     </CCol>
-                    <CCol sm={3}>
+                    {/* <CCol sm={3}>
                         <CButtonGroup>
                             {['Pizza', 'Rosca'].map( (value) => (
                                 <CButton 
@@ -202,33 +202,32 @@ const CardifValidation = () => {
                                 </CButton>
                             ))}
                         </CButtonGroup>
-                    </CCol>                    
+                    </CCol>                     */}
+                </CRow>                
+            </CCardHeader>           
+                    {viewType === 'Gráfico' ? <CCardBody style={{height:'600px'}}><MyResponsivePie data={pieData} pieType={pieOrDonut.toLowerCase()} /></CCardBody> : "" }
+                    {viewType === 'Tabela' ?<CCardBody><DataTableView tableData={pieData} /></CCardBody>:""} 
+                    {viewType === 'Dados Detalhado' ? <CCardBody style={{marginLeft:'0px'}}> <NewDataBla/></CCardBody>:"" }    
+        </CCard>
+        <CCard>
+            <CCardHeader>
+                <CRow>
+                    <CCol sm={6}>
+                    <h4>Cardif Ducati</h4>
+                    </CCol>
                     <CCol sm={3}>
-                        {/* <CButtonGroup>
-                            {['horizontal', 'vertical'].map( (value) => (
+                        <CButtonGroup>
+                            {['Gráfico', 'Tabela', 'Dados Detalhado'].map( (value) => (
                                 <CButton 
                                 color='outline-secondary'
-                                active={value === vertOrHor}
-                                onClick={() => setVertOrHor(value.toLowerCase())}
+                                active={value === viewType}
+                                onClick={() => setViewType(value)}
                                 key={value}>
                                     {value}
                                 </CButton>
                             ))}
-                        </CButtonGroup> */}
-                    </CCol>
-                    <CCol sm={3}>
-                        {/* <CButtonGroup>
-                            {['horizontal', 'vertical'].map( (value) => (
-                                <CButton 
-                                color='outline-secondary'
-                                active={value === vertOrHor}
-                                onClick={() => setVertOrHor(value.toLowerCase())}
-                                key={value}>
-                                    {value}
-                                </CButton>
-                            ))}
-                        </CButtonGroup> */}
-                    </CCol>
+                        </CButtonGroup>
+                    </CCol>     
                 </CRow>                
             </CCardHeader>           
                     {viewType === 'Gráfico' ? <CCardBody style={{height:'600px'}}><MyResponsivePie data={pieData} pieType={pieOrDonut.toLowerCase()} /></CCardBody> : "" }
