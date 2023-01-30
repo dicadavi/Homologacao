@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import { ResponsivePie } from '@nivo/pie'
 import { CButton, CButtonGroup, CCard, CCardBody, CCardHeader, CCol, CHeader, CRow, CAlert, CTable } from '@coreui/react'
@@ -14,27 +14,27 @@ const CardifValidation = () => {
 
     let total = 1// Total de Conteudo
     let couunt = 1 // Quantidade em Ordem 
-    for (let i = 0; i < tableData.length; i++) {
-        if (pieData.length > 0 && pieData.find(pieData => pieData.label === tableData[i].ValidationQuery) != null) {
-            console.log("Ja criado");
-        } else {
-            let buscado = tableData[i].ValidationQuery
-            total = tableData.filter(tableData => tableData.ValidationQuery === buscado).length;
-            pieData.push({ id: couunt, label: tableData[i].ValidationQuery, value: total });
-            couunt++
-            // console.log(pieData.find(pieData => pieData.ERRO === tableData[i].ValidationQuery) != null);
+        for (let i = 0; i < tableData.length; i++) {
+        if (pieData.length > 0 && pieData.find(pieData => pieData.label === tableData[i].ValidationQuery) != null ) {
+       console.log("Ja criado");
+    } else {
+        let buscado = tableData[i].ValidationQuery
+        total = tableData.filter(tableData => tableData.ValidationQuery === buscado).length;
+        pieData.push({ id: couunt,label: tableData[i].ValidationQuery, value: total });
+        couunt++
+       // console.log(pieData.find(pieData => pieData.ERRO === tableData[i].ValidationQuery) != null);
+    
+   
+    } 
+}    
+           
+    
 
 
-        }
-    }
-
-
-
-
-    const MyResponsivePie = ({ data, pieType }) => (
+    const MyResponsivePie = ({ data, pieType}) => (
         <ResponsivePie
             data={data}
-            margin={{ top: 80, right: 80, bottom: 80, left: -250 }}
+            margin={{ top: 80, right: 80, bottom: 80, left: -250}}            
             innerRadius={pieType === 'pizza' ? 0 : 0.5}
             padAngle={0.7}
             cornerRadius={3}
@@ -55,7 +55,7 @@ const CardifValidation = () => {
             arcLinkLabelsThickness={5}
             arcLinkLabelsColor={{ from: 'color' }}
             arcLabelsSkipAngle={10}
-            arcLinkLabel={function (e) { return e.id + " (" + e.label + ")" }}
+            arcLinkLabel={function(e){return e.id+" ("+e.label+")"}}
             arcLabelsTextColor={{
                 from: 'color',
                 modifiers: [
@@ -167,30 +167,30 @@ const CardifValidation = () => {
     MyResponsivePie.propTypes = {
         data: PropTypes.object.isRequired,
         pieType: PropTypes.bool.isRequired
-    }
+    } 
 
-    return (
+    return(
         <>
-            <CCard>
-                <CCardHeader>
-                    <CRow>
-                        <CCol sm={6}>
-                            <h4>Cardif Volks</h4>
-                        </CCol>
-                        <CCol sm={3}>
-                            <CButtonGroup>
-                                {['Gráfico', 'Tabela', 'Dados Detalhado'].map((value) => (
-                                    <CButton
-                                        color='outline-secondary'
-                                        active={value === viewType}
-                                        onClick={() => setViewType(value)}
-                                        key={value}>
-                                        {value}
-                                    </CButton>
-                                ))}
-                            </CButtonGroup>
-                        </CCol>
-                        {/* <CCol sm={3}>
+        <CCard>
+            <CCardHeader>
+                <CRow>
+                    <CCol sm={6}>
+                    <h4>Cardif Volks</h4>
+                    </CCol>
+                    <CCol sm={3}>
+                        <CButtonGroup>
+                            {['Gráfico', 'Tabela', 'Dados Detalhado'].map( (value) => (
+                                <CButton 
+                                color='outline-secondary'
+                                active={value === viewType}
+                                onClick={() => setViewType(value)}
+                                key={value}>
+                                    {value}
+                                </CButton>
+                            ))}
+                        </CButtonGroup>
+                    </CCol>
+                    <CCol sm={3}>
                         <CButtonGroup>
                             {['Pizza', 'Rosca'].map( (value) => (
                                 <CButton 
@@ -202,38 +202,39 @@ const CardifValidation = () => {
                                 </CButton>
                             ))}
                         </CButtonGroup>
-                    </CCol>                     */}
-                    </CRow>
-                </CCardHeader>
-                {viewType === 'Gráfico' ? <CCardBody style={{ height: '600px' }}><MyResponsivePie data={pieData} pieType={pieOrDonut.toLowerCase()} /></CCardBody> : ""}
-                {viewType === 'Tabela' ? <CCardBody><DataTableView tableData={pieData} /></CCardBody> : ""}
-                {viewType === 'Dados Detalhado' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla /></CCardBody> : ""}
-            </CCard>
-            <CCard>
-                <CCardHeader>
-                    <CRow>
-                        <CCol sm={6}>
-                            <h4>Cardif Ducati</h4>
-                        </CCol>
-                        <CCol sm={3}>
-                            <CButtonGroup>
-                                {['Gráfico', 'Tabela', 'Dados Detalhado'].map((value) => (
-                                    <CButton
-                                        color='outline-secondary'
-                                        active={value === viewType}
-                                        onClick={() => setViewType(value)}
-                                        key={value}>
-                                        {value}
-                                    </CButton>
-                                ))}
-                            </CButtonGroup>
-                        </CCol>
-                    </CRow>
-                </CCardHeader>
-                {viewType === 'Gráfico' ? <CCardBody style={{ height: '500px' }}><MyResponsivePie data={pieData} pieType={pieOrDonut.toLowerCase()} /></CCardBody> : ""}
-                {viewType === 'Tabela' ? <CCardBody><DataTableView tableData={pieData} /></CCardBody> : ""}
-                {viewType === 'Dados Detalhado' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla /></CCardBody> : ""}
-            </CCard>
+                    </CCol>                    
+                    <CCol sm={3}>
+                        {/* <CButtonGroup>
+                            {['horizontal', 'vertical'].map( (value) => (
+                                <CButton 
+                                color='outline-secondary'
+                                active={value === vertOrHor}
+                                onClick={() => setVertOrHor(value.toLowerCase())}
+                                key={value}>
+                                    {value}
+                                </CButton>
+                            ))}
+                        </CButtonGroup> */}
+                    </CCol>
+                    <CCol sm={3}>
+                        {/* <CButtonGroup>
+                            {['horizontal', 'vertical'].map( (value) => (
+                                <CButton 
+                                color='outline-secondary'
+                                active={value === vertOrHor}
+                                onClick={() => setVertOrHor(value.toLowerCase())}
+                                key={value}>
+                                    {value}
+                                </CButton>
+                            ))}
+                        </CButtonGroup> */}
+                    </CCol>
+                </CRow>                
+            </CCardHeader>           
+                    {viewType === 'Gráfico' ? <CCardBody style={{height:'600px'}}><MyResponsivePie data={pieData} pieType={pieOrDonut.toLowerCase()} /></CCardBody> : "" }
+                    {viewType === 'Tabela' ?<CCardBody><DataTableView tableData={pieData} /></CCardBody>:""} 
+                    {viewType === 'Dados Detalhado' ? <CCardBody style={{marginLeft:'0px'}}> <NewDataBla/></CCardBody>:"" }    
+        </CCard>
         </>
     )
 }
