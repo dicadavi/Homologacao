@@ -1,8 +1,9 @@
 import React from 'react';
-import ErroCardif from '../base/Validation/CardifVolksValidation0.json';
 import { MDBDataTableV5 } from 'mdbreact';
 
-export default function Pagination() {
+
+
+export default function Pagination( {dados} ) {
   const [datatable, setDatatable] = React.useState({
     columns: [
       {
@@ -61,7 +62,7 @@ export default function Pagination() {
         width: 50,
       },
     ],
-    rows: ErroCardif
+    rows: dados
   });
 
   return <MDBDataTableV5 hover entriesOptions={[5, 20, 25]} entries={5} pagesAmount={4} data={datatable} fullPagination />
