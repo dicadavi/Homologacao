@@ -13,7 +13,7 @@ import {
   cilSpeedometer,
   cilStar,
 } from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import { CNav, CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
   {
@@ -37,9 +37,27 @@ const _nav = [
     icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
   },
   {
-    component: CNavItem,
+    component: CNavGroup,
     name: 'Cardif',
-    to: '/cardifValidation',
+    to: '/Cardif',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Volks',
+        to: 'Cardif/Volks',
+      },
+      {
+        component: CNavItem,
+        name: 'Ducati',
+        to: 'Cardif/Ducati',
+      },
+    ],
+  },
+  {
+    component: CNavItem,
+    name: 'MetLife',
+    to: '/MetLife/Metlife',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {

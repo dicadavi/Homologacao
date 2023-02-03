@@ -4,8 +4,8 @@ import { ResponsivePie } from '@nivo/pie'
 import CIcon from '@coreui/icons-react';
 import * as icon from '@coreui/icons';
 import { CButton, CButtonGroup, CCard, CCardBody, CCardHeader, CCol, CHeader, CRow, CAlert, CTable, CSpinner } from '@coreui/react'
-import DataTableView from './DataTable';
-import NewDataBla from './NewTable';
+import DataTableView from '../DataTable';
+import NewDataBla from '../NewTable';
 import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 
@@ -16,13 +16,13 @@ const CardifValidation = () => {
     const [pieOrDonut, setPieOrDonut] = useState('Pizza')
     const pieData = []
     var Refresh = "Atualizar"
-    const { data: salesVolks, isFetching } = useQuery('Volks', async () => {
-        const response = await axios.get('http://localhost:8800/cardifVolks')
+    const { data: salesDucati, isFetching } = useQuery('Ducati', async () => {
+        const response = await axios.get('http://localhost:8800/cardifDucati')
         return response.data
     }, {
         refetchOnWindowFocus: false, //Evita que a recarregue sempre que volta na tela
-        staleTime: 50000,
-        cacheTime: 50000
+        staleTime: Infinity, // 60 min para se tornar obsoleto e recarregar a query
+        cacheTime: 1000 * 60 * 60 // 60 min de cache
 
     })
 
@@ -31,7 +31,7 @@ async function RefreshDB(){
     
     Refresh="Loading..."
     console.log(Refresh)
-    await queryClient.invalidateQueries('Volks')
+    await queryClient.invalidateQueries('Ducati')
     Refresh="Atualizar"
     console.log(Refresh)
 }
@@ -39,19 +39,78 @@ async function RefreshDB(){
     function UpdatePie(params) {
         let total = 1// Total de Conteudo
         let couunt = 1 // Quantidade em Ordem 
-        for (let i = 0; i < salesVolks.length; i++) {
-            if (pieData.length > 0 && pieData.find(pieData => pieData.label === salesVolks[i].ValidationQuery) != null) {
+        for (let i = 0; i < salesDucati.length; i++) {
+            if (pieData.length > 0 && pieData.find(pieData => pieData.label === salesDucati[i].ValidationQuery) != null) {
 
             } else {
-                let buscado = salesVolks[i].ValidationQuery
-                total = salesVolks.filter(salesVolks => salesVolks.ValidationQuery === buscado).length;
-                pieData.push({ id: couunt, label: salesVolks[i].ValidationQuery, value: total });
+                let buscado = salesDucati[i].ValidationQuery
+                total = salesDucati.filter(salesDucati => salesDucati.ValidationQuery === buscado).length;
+                pieData.push({ id: couunt, label: salesDucati[i].ValidationQuery, value: total });
                 couunt++
-                // console.log(pieData.find(pieData => pieData.ERRO === salesVolks[i].ValidationQuery) != null); 
+                // console.log(pieData.find(pieData => pieData.ERRO === salesDucati[i].ValidationQuery) != null); 
             }
         }
 
     }
+
+    const coluna =[
+        {
+          label: 'Validação',
+          field: 'ValidationQuery',
+          width: 150,
+          attributes: {
+            'aria-controls': 'DataTable',
+            'aria-label': 'ValidationQuery',
+          },
+        },
+        {
+          label: 'Periodo',
+          field: 'PeriodoDeValidação',
+          width: 120,
+        },
+        {
+          label: 'SaleId',
+          field: 'SaleId',
+          width: 100,
+        },
+        {
+          label: 'Status',
+          field: 'SaleStatus',
+          sort: 'asc',
+          width: 50,
+        },
+        {
+          label: 'Status Detail',
+          field: 'ValidationStatusDetail',
+          sort: 'asc',
+          width: 50,
+        },
+        {
+          label: 'Data do Registro',
+          field: 'SaleDateRegistro',
+          sort: 'disabled',
+          width: 80,
+        },     
+        {
+          label: 'InicioDaCampanha',
+          field: 'InicioDaCampanha',
+          sort: 'disabled',
+          width: 80,
+        },
+        {
+          label: 'Lote',
+          field: 'validationBatchId',
+          sort: 'disabled',
+          width: 50,
+        },
+        {
+          label: 'ProdutoCardif',
+          field: 'ProdutoCardif',
+          sort: 'disabled',
+          width: 50,
+        },
+      ]
+
     const MyResponsivePie = ({ data, pieType }) => (
         <ResponsivePie
             data={data}
@@ -195,7 +254,7 @@ async function RefreshDB(){
                 <CCardHeader>
                     <CRow>
                         <CCol sm={5}>
-                            <h4>Cardif Validation</h4>
+                            <h4>Validação Ducati</h4>
                         </CCol>
                         <CCol sm={3}>
                             <CButtonGroup>
@@ -232,12 +291,12 @@ async function RefreshDB(){
                         </CCol>
                     </CRow>
                 </CCardHeader>
-                {isFetching && <CAlert>Carregando...</CAlert>}
+                {isFetching && <CAlert> <CSpinner component="span" size="sm" aria-hidden="true" color='grey' /> .   Carregando...</CAlert>}
                 {viewType === 'Gráfico' ? <CCardBody style={{ height: '600px' }}><MyResponsivePie data={pieData} pieType={pieOrDonut.toLowerCase()} /></CCardBody> : ""}
-                {salesVolks && viewType === 'Tabela' ? <CCardBody><DataTableView tableData={pieData} /></CCardBody> : ""}
-                {salesVolks && viewType === 'Dados Detalhado' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla dados={salesVolks} /></CCardBody> : ""}
+                {salesDucati && viewType === 'Tabela' ? <CCardBody><DataTableView tableData={pieData} /></CCardBody> : ""}
+                {salesDucati && viewType === 'Dados Detalhado' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla dados={salesDucati} coluna={coluna}/></CCardBody> : ""}
                 <CCardBody>                    
-                    {salesVolks && UpdatePie()}
+                    {salesDucati && UpdatePie()}
                 </CCardBody>
             </CCard>
         </>

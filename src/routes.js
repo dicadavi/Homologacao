@@ -3,7 +3,9 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const NivoBar = React.lazy(() => import('./views/nivo/NivoBar'))
 const NewTable = React.lazy(() => import('./views/nivo/NewTable'))
-const CardifValidation = React.lazy(() => import('./views/nivo/CardifValidation'))
+const CardifVolks = React.lazy(() => import('./views/nivo/Cardif/Volks'))
+const CardifDucati = React.lazy(() => import('./views/nivo/Cardif/Ducati'))
+const Metlife = React.lazy(() => import('./views/nivo/MetLife/Metlife'))
 const NivoBump = React.lazy(() => import('./views/nivo/NivoBump'))
 const NivoFunnel = React.lazy(() => import('./views/nivo/NivoFunnel'))
 const NivoBullet = React.lazy(() => import('./views/nivo/NivoBullet'))
@@ -62,7 +64,9 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/nivobar', name: 'Nivo Bar', element: NivoBar },
   { path: '/NewTable', name: 'Nova Tabela', element: NewTable },
-  { path: '/cardifValidation', name: 'Validações Cardif', element: CardifValidation },
+  { path: '/Cardif/Volks', name: 'Validações Volks', element: CardifVolks },
+  { path: '/Cardif/Ducati', name: 'Validações Ducati', element: CardifDucati },
+  { path: '/MetLife/Metlife', name: 'Validações Metlife', element: Metlife },
   { path: '/nivobump', name: 'Nivo Bump', element: NivoBump },
   { path: '/nivofunnel', name: 'Nivo Funnel', element: NivoFunnel },
   { path: '/nivobullet', name: 'Nivo Bullet', element: NivoBullet },
