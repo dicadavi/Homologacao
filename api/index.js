@@ -30,7 +30,7 @@ function execSQLQuery(sqlQry, res){
     password : process.env.PASSWORD_DB,
     database : process.env.DATABASE_DB
   });
- 
+
   connection.query(sqlQry, (error, results, fields) => {
       if(error) 
         res.json(error);

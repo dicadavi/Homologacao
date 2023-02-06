@@ -12,6 +12,7 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
+  cibFilezilla
 } from '@coreui/icons'
 import { CNav, CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -77,6 +78,34 @@ const _nav = [
     name: 'Bullet',
     to: '/nivobullet',
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'MetLife',
+    to: '/MetLife/Metlife',
+    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: 'FTP',
+  },
+  {
+    component: CNavGroup,
+    name: 'Visualização FTP',
+    to: '/VisualizacaoFTP',
+    icon: <CIcon icon={cibFilezilla} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Cardif - Volks e Ducati',
+        to: '/VisualizacaoFTP/Cardif',
+      },
+      {
+        component: CNavItem,
+        name: 'Metlife',
+        to: '/VisualizacaoFTP/Metlife',
+      },
+    ],
   },
   {
     component: CNavTitle,
