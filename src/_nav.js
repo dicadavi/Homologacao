@@ -80,12 +80,6 @@ const _nav = [
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {
-    component: CNavItem,
-    name: 'MetLife',
-    to: '/MetLife/Metlife',
-    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  },
-  {
     component: CNavTitle,
     name: 'FTP',
   },

@@ -1,0 +1,29 @@
+[
+    {
+      "label": "Lote ID",
+      "field": "id",
+      "width": 150,
+      "attributes": {
+        "aria-controls": "DataTable",
+        "aria-label": "Lote ID"
+      }
+    },   
+    {
+      "label": "Total a pagar",
+      "field": "SomaValorPorLote",
+      "sort": "asc",
+      "width": 50
+    },
+    {
+        "label": "Orçamento Está Disponível?",
+        "field": "OrçamentoDisponivel",
+        "sort": "asc",
+        "width": 50
+      },
+      {
+        "label": "Saldo Diponível para uso?",
+        "field": "SaldoDisponivel",
+        "sort": "asc",
+        "width": 50
+      }
+  ]

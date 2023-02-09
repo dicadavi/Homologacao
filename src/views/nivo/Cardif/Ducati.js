@@ -8,6 +8,7 @@ import DataTableView from '../DataTable';
 import NewDataBla from '../NewTable';
 import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
+import colunaBatch from '../DefultBatch'
 
 
 
@@ -16,6 +17,7 @@ const CardifValidation = () => {
     const [pieOrDonut, setPieOrDonut] = useState('Pizza')
     const pieData = []
     var Refresh = "Atualizar"
+    // Validações das vendas
     const { data: salesDucati, isFetching } = useQuery('Ducati', async () => {
         const response = await axios.get('http://localhost:8800/cardifDucati')
         return response.data
@@ -26,15 +28,24 @@ const CardifValidation = () => {
 
     })
 
+    // PegarFinanceiro
+    const { data: GetValidationBatch, isFetchingBatch } = useQuery('Batch', async () => {
+        const response = await axios.get('http://localhost:8800/ValidationBudget/3')
+        return response.data
+    }, {
+        refetchOnWindowFocus: true,
+
+    })
+
     const queryClient = useQueryClient()
-async function RefreshDB(){
-    
-    Refresh="Loading..."
-    console.log(Refresh)
-    await queryClient.invalidateQueries('Ducati')
-    Refresh="Atualizar"
-    console.log(Refresh)
-}
+    async function RefreshDB() {
+
+        Refresh = "Loading..."
+        console.log(Refresh)
+        await queryClient.invalidateQueries('Ducati')
+        Refresh = "Atualizar"
+        console.log(Refresh)
+    }
 
     function UpdatePie(params) {
         let total = 1// Total de Conteudo
@@ -53,63 +64,63 @@ async function RefreshDB(){
 
     }
 
-    const coluna =[
+    const coluna = [
         {
-          label: 'Validação',
-          field: 'ValidationQuery',
-          width: 150,
-          attributes: {
-            'aria-controls': 'DataTable',
-            'aria-label': 'ValidationQuery',
-          },
+            label: 'Validação',
+            field: 'ValidationQuery',
+            width: 150,
+            attributes: {
+                'aria-controls': 'DataTable',
+                'aria-label': 'ValidationQuery',
+            },
         },
         {
-          label: 'Periodo',
-          field: 'PeriodoDeValidação',
-          width: 120,
+            label: 'Periodo',
+            field: 'PeriodoDeValidação',
+            width: 120,
         },
         {
-          label: 'SaleId',
-          field: 'SaleId',
-          width: 100,
+            label: 'SaleId',
+            field: 'SaleId',
+            width: 100,
         },
         {
-          label: 'Status',
-          field: 'SaleStatus',
-          sort: 'asc',
-          width: 50,
+            label: 'Status',
+            field: 'SaleStatus',
+            sort: 'asc',
+            width: 50,
         },
         {
-          label: 'Status Detail',
-          field: 'ValidationStatusDetail',
-          sort: 'asc',
-          width: 50,
+            label: 'Status Detail',
+            field: 'ValidationStatusDetail',
+            sort: 'asc',
+            width: 50,
         },
         {
-          label: 'Data do Registro',
-          field: 'SaleDateRegistro',
-          sort: 'disabled',
-          width: 80,
-        },     
-        {
-          label: 'InicioDaCampanha',
-          field: 'InicioDaCampanha',
-          sort: 'disabled',
-          width: 80,
+            label: 'Data do Registro',
+            field: 'SaleDateRegistro',
+            sort: 'disabled',
+            width: 80,
         },
         {
-          label: 'Lote',
-          field: 'validationBatchId',
-          sort: 'disabled',
-          width: 50,
+            label: 'InicioDaCampanha',
+            field: 'InicioDaCampanha',
+            sort: 'disabled',
+            width: 80,
         },
         {
-          label: 'ProdutoCardif',
-          field: 'ProdutoCardif',
-          sort: 'disabled',
-          width: 50,
+            label: 'Lote',
+            field: 'validationBatchId',
+            sort: 'disabled',
+            width: 50,
         },
-      ]
+        {
+            label: 'ProdutoCardif',
+            field: 'ProdutoCardif',
+            sort: 'disabled',
+            width: 50,
+        },
+    ]
 
     const MyResponsivePie = ({ data, pieType }) => (
         <ResponsivePie
@@ -253,12 +264,12 @@ async function RefreshDB(){
             <CCard>
                 <CCardHeader>
                     <CRow>
-                        <CCol sm={5}>
+                        <CCol sm={3}>
                             <h4>Validação Ducati</h4>
                         </CCol>
-                        <CCol sm={3}>
+                        <CCol sm={5}>
                             <CButtonGroup>
-                                {['Gráfico', 'Tabela', 'Dados Detalhado'].map((value) => (
+                                {['Gráfico', 'Tabela', 'Dados Detalhado', 'Financeiro'].map((value) => (
                                     <CButton
                                         color='outline-secondary'
                                         active={value === viewType}
@@ -283,10 +294,10 @@ async function RefreshDB(){
                             </CButtonGroup>
                         </CCol>
                         <CCol sm={1}>
-                            <CButton color="secondary" size="sm"  variant="outline" onClick={() => RefreshDB()}>
-                                {Refresh === 'Atualizar' ?  <CIcon icon={icon.cilLoopCircular} size="sm"/> :<CSpinner component="span" size="sm" aria-hidden="true" color='grey' />
+                            <CButton color="secondary" size="sm" variant="outline" onClick={() => RefreshDB()}>
+                                {Refresh === 'Atualizar' ? <CIcon icon={icon.cilLoopCircular} size="sm" /> : <CSpinner component="span" size="sm" aria-hidden="true" color='grey' />
                                 } {Refresh}
-                                
+
                             </CButton>
                         </CCol>
                     </CRow>
@@ -294,11 +305,14 @@ async function RefreshDB(){
                 {isFetching && <CAlert> <CSpinner component="span" size="sm" aria-hidden="true" color='grey' /> .   Carregando...</CAlert>}
                 {viewType === 'Gráfico' ? <CCardBody style={{ height: '600px' }}><MyResponsivePie data={pieData} pieType={pieOrDonut.toLowerCase()} /></CCardBody> : ""}
                 {salesDucati && viewType === 'Tabela' ? <CCardBody><DataTableView tableData={pieData} /></CCardBody> : ""}
-                {salesDucati && viewType === 'Dados Detalhado' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla dados={salesDucati} coluna={coluna}/></CCardBody> : ""}
-                <CCardBody>                    
+                {salesDucati && viewType === 'Dados Detalhado' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla dados={salesDucati} coluna={coluna} /></CCardBody> : ""}
+                {GetValidationBatch && viewType === 'Financeiro' ? <CCardHeader><CCol sm={7}><h5>Saldo Atual do Fornecedor {GetValidationBatch[0].name}</h5> {GetValidationBatch[0].currentBalance}</CCol></CCardHeader> : ""}
+                {GetValidationBatch && viewType === 'Financeiro' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla dados={GetValidationBatch} coluna={colunaBatch} /></CCardBody> : ""}
+                <CCardBody>
                     {salesDucati && UpdatePie()}
                 </CCardBody>
             </CCard>
+
         </>
     )
 }
