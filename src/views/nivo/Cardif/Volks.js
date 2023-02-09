@@ -8,6 +8,7 @@ import DataTableView from '../DataTable';
 import NewDataBla from '../NewTable';
 import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
+import colunaBatch from '../DefultBatch'
 
 
 
@@ -16,6 +17,7 @@ const CardifValidation = () => {
     const [pieOrDonut, setPieOrDonut] = useState('Pizza')
     const pieData = []
     var Refresh = "Atualizar"
+    // Validações das vendas
     const { data: salesVolks, isFetching } = useQuery('Volks', async () => {
         const response = await axios.get('http://localhost:8800/cardifVolks')
         return response.data
@@ -23,6 +25,15 @@ const CardifValidation = () => {
         refetchOnWindowFocus: false, //Evita que a recarregue sempre que volta na tela
         staleTime: Infinity, // 60 min para se tornar obsoleto e recarregar a query
         cacheTime: 1000 * 60 * 60 // 60 min de cache
+
+    })
+
+    // PegarFinanceiro
+    const { data: GetValidationBatch, isFetchingBatch } = useQuery('Batch', async () => {
+        const response = await axios.get('http://localhost:8800/ValidationBudget/3')
+        return response.data
+    }, {
+        refetchOnWindowFocus: true,
 
     })
 
@@ -252,12 +263,12 @@ const CardifValidation = () => {
             <CCard>
                 <CCardHeader>
                     <CRow>
-                        <CCol sm={5}>
+                        <CCol sm={3}>
                             <h4>Validação Volks</h4>
                         </CCol>
-                        <CCol sm={3}>
+                        <CCol sm={5}>
                             <CButtonGroup>
-                                {['Gráfico', 'Tabela', 'Dados Detalhado'].map((value) => (
+                                {['Gráfico', 'Tabela', 'Dados Detalhado','Financeiro'].map((value) => (
                                     <CButton
                                         color='outline-secondary'
                                         active={value === viewType}
@@ -294,6 +305,8 @@ const CardifValidation = () => {
                 {viewType === 'Gráfico' ? <CCardBody style={{ height: '600px' }}><MyResponsivePie data={pieData} pieType={pieOrDonut.toLowerCase()} /></CCardBody> : ""}
                 {salesVolks && viewType === 'Tabela' ? <CCardBody><DataTableView tableData={pieData} /></CCardBody> : ""}
                 {salesVolks && viewType === 'Dados Detalhado' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla dados={salesVolks} coluna={coluna} /></CCardBody> : ""}
+                 {GetValidationBatch && viewType === 'Financeiro' ? <CCardHeader><CCol sm={7}><h5>Saldo Atual do Fornecedor {GetValidationBatch[0].name}</h5> {GetValidationBatch[0].currentBalance}</CCol></CCardHeader> : ""}
+                {GetValidationBatch && viewType === 'Financeiro' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla dados={GetValidationBatch} coluna={colunaBatch} /></CCardBody> : ""}
                 <CCardBody>
                     {salesVolks && UpdatePie()}
                 </CCardBody>

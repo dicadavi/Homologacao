@@ -356,3 +356,58 @@ GROUP by pss.id, sale.id, se.id, st.id, ca.id, v.id, std.id, vr.id, c3.id , u.id
 Having ValidationQuery REGEXP "(-)"	`, res)
  
 })
+// Validação De Saldo e Lotes
+app.get("/ValidationBudget/:id", function(req,res){
+    let CompanyID = req.params.id
+    execSQLQuery(`SELECT DISTINCT vb.id, vb.monthlyBudgetId, vb.description ,mb.closed, mb.budget, mb.spend, mb.year, mb.month,  SUM(rdd.reward) "SomaValorPorLote", IF((SUM(rdd.reward) + mb.spend) < mb.budget, "Disponível","Não Disponível") "OrçamentoDisponivel", IF(SUM(DISTINCT a.currentBalance) >  SUM(rdd.reward), "Disponível","Não Disponível") "SaldoDisponivel", a.currentBalance, a.name
+FROM ValidationBatch vb 
+INNER JOIN Company c2 ON c2.id = vb.companyId 
+INNER JOIN Account a ON a.id = c2.accountId 
+Inner JOIN Validation v on v.validationBatchId = vb.id 
+Inner JOIN Sale s on s.id = v.sourceId
+LEFT JOIN Campaign c on c.id = s.campaignId 
+LEFT JOIN ProductCampaign pc on pc.campaignId = c.id 
+LEFT JOIN ProductCampaignRewardDistribution pcrd on pcrd.productCampaignId = pc.id 
+LEFT JOIN RewardDistributionDetail rdd on rdd.rewardDistributionId = pcrd.rewardDistributionId 
+LEFT JOIN MonthlyBudget mb on mb.id = vb.monthlyBudgetId 
+INNER JOIN StatusDetail sd2 on sd2.id = v.statusDetailId 
+LEFT JOIN PreSale ps on ps.saleId = s.id 
+LEFT JOIN ValidationBatchApproveLogReport vbalr on vbalr.preSaleId = ps.id 
+LEFT JOIN ValidationBatchApproveItem vbai on vbai.preSaleId = ps.id 
+LEFT JOIN ValidationBatchApprove vba on vba.id = vbai.validationBatchApproveId 
+WHERE s.statusId = 1  
+and sd2.statusId = 2
+and IF(c2.id <> 10373, TRUE, vba.status REGEXP"(Aprovado)")
+and IF(c2.id <> 10373, TRUE,vbalr.status REGEXP "(Liberado)")
+and rdd.id is not null
+and c2.id = ${CompanyID}
+GROUP BY vb.id `,res)
+})
+
+// GetCompany
+app.get("/Company", function(req,res){
+    let IDFilter = req.params.id
+    execSQLQuery(
+        `SELECT*
+        FROM Company c 
+        WHERE c.enabled = true
+        AND c.accountId is not null`
+    ,res)
+   
+})
+
+
+
+
+// Zona de Teste API
+app.get("/Teste/:id", function(req,res){
+    let IDFilter = req.params.id
+    execSQLQuery(
+        `SELECT *
+        from Account a 
+        INNER JOIN Company c on c.accountId = a.id 
+        WHERE TRUE 
+        AND a.id = ${IDFilter}`
+    ,res)
+   
+})
