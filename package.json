@@ -45,6 +45,7 @@
     "core-js": "^3.21.1",
     "cors": "^2.8.5",
     "d-": "^1.0.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mdbreact": "^5.2.0",
     "mysql": "^2.18.1",
@@ -60,7 +61,8 @@
     "react-router-dom": "^6.2.2",
     "react-select": "^5.2.2",
     "redux": "4.1.2",
-    "simplebar-react": "^2.3.6"
+    "simplebar-react": "^2.3.6",
+    "ssh2-sftp-client": "^9.0.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",
