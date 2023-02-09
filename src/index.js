@@ -8,10 +8,14 @@ import { Provider } from 'react-redux'
 import store from './store'
 import 'bootstrap-css-only/css/bootstrap.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import {  QueryClientProvider } from 'react-query'
+import { queryClient } from './views/library/queryClient.ts'
 
 ReactDOM.render(
   <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
     <App />
+    </QueryClientProvider>    
   </Provider>,
   document.getElementById('root'),
 )
