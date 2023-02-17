@@ -359,7 +359,7 @@ Having ValidationQuery REGEXP "(-)"	`, res)
 // Validação De Saldo e Lotes
 app.get("/ValidationBudget/:id", function(req,res){
     let CompanyID = req.params.id
-    execSQLQuery(`SELECT DISTINCT vb.id, vb.monthlyBudgetId, vb.description ,mb.closed, mb.budget, mb.spend, mb.year, mb.month,  SUM(rdd.reward) "SomaValorPorLote", IF((SUM(rdd.reward) + mb.spend) < mb.budget, "Disponível","Não Disponível") "OrçamentoDisponivel", IF(SUM(DISTINCT a.currentBalance) >  SUM(rdd.reward), "Disponível","Não Disponível") "SaldoDisponivel", a.currentBalance, a.name
+    execSQLQuery(`SELECT DISTINCT vb.id, vb.monthlyBudgetId, vb.description ,mb.closed, mb.budget, mb.spend, mb.year, mb.month,  SUM(rdd.reward) "SomaValorPorLote", IF((SUM(rdd.reward) + mb.spend) < mb.budget and mb.closed = false, "Disponível","Indisponível") "OrçamentoDisponivel", IF(SUM(DISTINCT a.currentBalance) >  SUM(rdd.reward), "Disponível","Indisponível") "SaldoDisponivel", a.currentBalance, a.name
 FROM ValidationBatch vb 
 INNER JOIN Company c2 ON c2.id = vb.companyId 
 INNER JOIN Account a ON a.id = c2.accountId 

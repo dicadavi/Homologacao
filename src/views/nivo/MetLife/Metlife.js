@@ -8,7 +8,8 @@ import DataTableView from '../DataTable';
 import NewDataBla from '../NewTable';
 import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
-import colunaBatch from '../DefultBatch'
+import Teste from '../teste'
+import { MDBBadge } from 'mdb-react-ui-kit';
 
 
 
@@ -300,8 +301,8 @@ async function RefreshDB(){
                 {viewType === 'Gráfico' ? <CCardBody style={{ height: '600px' }}><MyResponsivePie data={pieData} pieType={pieOrDonut.toLowerCase()} /></CCardBody> : ""}
                 {salesMetlife && viewType === 'Tabela' ? <CCardBody><DataTableView tableData={pieData} /></CCardBody> : ""}
                 {salesMetlife && viewType === 'Dados Detalhado' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla dados={salesMetlife} coluna={coluna} /></CCardBody> : ""}
-                {GetValidationBatch && viewType === 'Financeiro' ? <CCardHeader><CCol sm={7}><h5>Saldo Atual do Fornecedor {GetValidationBatch[0].name}</h5> {GetValidationBatch[0].currentBalance}</CCol></CCardHeader> : ""}
-                {GetValidationBatch && viewType === 'Financeiro' ? <CCardBody style={{ marginLeft: '0px' }}> <NewDataBla dados={GetValidationBatch} coluna={colunaBatch} /></CCardBody> : ""}
+                {GetValidationBatch && viewType === 'Financeiro' ? <CCardHeader><CCol sm={7}><h5>Saldo Atual do Fornecedor <MDBBadge>{GetValidationBatch[0].name}</MDBBadge></h5><MDBBadge color='success' pill>{GetValidationBatch[0].currentBalance} R$ </MDBBadge></CCol></CCardHeader> : ""}
+                {GetValidationBatch && viewType === 'Financeiro' ?<CCardBody><Teste dados={GetValidationBatch}></Teste></CCardBody> :""}
                  <CCardBody>                    
                     {salesMetlife && UpdatePie()}
                 </CCardBody>
